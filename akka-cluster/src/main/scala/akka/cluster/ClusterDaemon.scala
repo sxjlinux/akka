@@ -396,10 +396,22 @@ private[cluster] class ClusterCoreDaemon(publisher: ActorRef, joinConfigCompatCh
       context.actorOf(propsWithDispatcher, name = "downingProvider")
     }
 
-    if (seedNodes.isEmpty)
-      logInfo("No seed-nodes configured, manual cluster join required")
-    else
+    if (seedNodes.isEmpty) {
+      if (isClusterBootstrapUsed)
+        logDebug("Cluster Bootstrap is used for joining")
+      else
+        logInfo("No seed-nodes configured, manual cluster join required")
+    } else {
       self ! JoinSeedNodes(seedNodes)
+    }
+  }
+
+  private def isClusterBootstrapUsed: Boolean = {
+    val conf = context.system.settings.config
+    conf.hasPath("akka.management.cluster.bootstrap") &&
+      conf.hasPath("akka.management.http.route-providers") &&
+      conf.getStringList("akka.management.http.route-providers")
+      .contains("akka.management.cluster.bootstrap.ClusterBootstrap$")
   }
 
   override def postStop(): Unit = {
