@@ -518,7 +518,7 @@ class Cluster(val system: ExtendedActorSystem) extends Extension {
         log.error(cause, "Cluster Node [{}] dc [" + settings.SelfDataCenter + "] - " + template, selfAddress, arg1, arg2, arg3)
     }
 
-    def logAtLevel(logLevel: LogLevel, message: String): Unit = {
+    private def logAtLevel(logLevel: LogLevel, message: String): Unit = {
       if (isLevelEnabled(logLevel))
         if (settings.SelfDataCenter == ClusterSettings.DefaultDataCenter)
           log.log(logLevel, "Cluster Node [{}] - {}", selfAddress, message)
@@ -526,7 +526,7 @@ class Cluster(val system: ExtendedActorSystem) extends Extension {
           log.log(logLevel, "Cluster Node [{}] dc [{}] - {}", selfAddress, settings.SelfDataCenter, message)
     }
 
-    def logAtLevel(logLevel: LogLevel, template: String, arg1: Any): Unit = {
+    private def logAtLevel(logLevel: LogLevel, template: String, arg1: Any): Unit = {
       if (isLevelEnabled(logLevel))
         if (settings.SelfDataCenter == ClusterSettings.DefaultDataCenter)
           log.log(logLevel, "Cluster Node [{}] - " + template, selfAddress, arg1)
@@ -534,14 +534,14 @@ class Cluster(val system: ExtendedActorSystem) extends Extension {
           log.log(logLevel, "Cluster Node [{}] dc [{}] - " + template, selfAddress, settings.SelfDataCenter, arg1)
     }
 
-    def logAtLevel(logLevel: LogLevel, template: String, arg1: Any, arg2: Any): Unit =
+    private def logAtLevel(logLevel: LogLevel, template: String, arg1: Any, arg2: Any): Unit =
       if (isLevelEnabled(logLevel))
         if (settings.SelfDataCenter == ClusterSettings.DefaultDataCenter)
           log.log(logLevel, "Cluster Node [{}] - " + template, selfAddress, arg1, arg2)
         else
           log.log(logLevel, "Cluster Node [{}] dc [{}] - " + template, selfAddress, settings.SelfDataCenter, arg1, arg2)
 
-    def logAtLevel(logLevel: LogLevel, template: String, arg1: Any, arg2: Any, arg3: Any): Unit =
+    private def logAtLevel(logLevel: LogLevel, template: String, arg1: Any, arg2: Any, arg3: Any): Unit =
       if (isLevelEnabled(logLevel))
         if (settings.SelfDataCenter == ClusterSettings.DefaultDataCenter)
           log.log(logLevel, "Cluster Node [{}] - " + template, selfAddress, arg1, arg2, arg3)
